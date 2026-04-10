@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mairas Sternenwelt</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(255, 105, 180, 0.12), transparent 25%),
+        radial-gradient(circle at 80% 20%, rgba(173, 216, 230, 0.12), transparent 20%),
+        linear-gradient(180deg, #0d1020 0%, #131933 45%, #0b0f1f 100%);
+      color: #f8f5ff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .stars, .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .star, .heart {
+      position: absolute;
+      opacity: 0.8;
+      animation: floaty linear infinite;
+    }
+
+    .star {
+      color: #fff4a8;
+      text-shadow: 0 0 10px rgba(255, 244, 168, 0.7);
+    }
+
+    .heart {
+      color: #ff7ac8;
+      text-shadow: 0 0 10px rgba(255, 122, 200, 0.8);
+    }
+
+    @keyframes floaty {
+      from {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-18px);
+      }
+      to {
+        transform: translateY(0px);
+      }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: min(1100px, 92%);
+      margin: 0 auto;
+      padding: 32px 0 60px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 56px 24px 36px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 6vw, 4.2rem);
+      line-height: 1.05;
+      margin-bottom: 14px;
+      color: #ffd4f0;
+      text-shadow: 0 0 18px rgba(255, 160, 220, 0.25);
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 2.4vw, 1.25rem);
+      color: #ece6ff;
+      max-width: 760px;
+      margin: 0 auto 22px;
+      line-height: 1.6;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .badge {
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255, 122, 200, 0.15);
+      border: 1px solid rgba(255, 122, 200, 0.25);
+      color: #ffe5f5;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 22px;
+      margin-top: 22px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+      backdrop-filter: blur(6px);
+    }
+
+    .card h2 {
+      font-size: 1.35rem;
+      margin-bottom: 10px;
+      color: #ffd7f1;
+    }
+
+    .card p, .card li {
+      color: #efeaff;
+      line-height: 1.65;
+      font-size: 1rem;
+    }
+
+    .card ul {
+      padding-left: 18px;
+      margin-top: 8px;
+    }
+
+    .photo-section {
+      margin-top: 28px;
+    }
+
+    .photo-section h2 {
+      margin-bottom: 14px;
+      font-size: 1.6rem;
+      color: #ffe0f4;
+      text-align: center;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .photo-box {
+      aspect-ratio: 4 / 5;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 2px dashed rgba(255, 183, 220, 0.45);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #ffeaf7;
+      padding: 18px;
+      font-size: 1rem;
+      box-shadow: inset 0 0 20px rgba(255,255,255,0.04), 0 10px 22px rgba(0,0,0,0.22);
+    }
+
+    .photo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .quote {
+      margin-top: 28px;
+      text-align: center;
+      padding: 28px 20px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      font-size: 1.2rem;
+      color: #fff0fa;
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      color: #d9d0f4;
+      font-size: 0.95rem;
+      opacity: 0.92;
+    }
+
+    .sparkle {
+      color: #ffe88a;
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        padding: 38px 18px 26px;
+      }
+
+      .card {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+  <div class="hearts" id="hearts"></div>
+
+  <main class="container">
+    <section class="hero">
+      <h1>✨ Mairas Sternenwelt ✨</h1>
+      <p>
+        Willkommen auf einer kleinen besonderen Seite nur für <strong>Maira</strong> –
+        mit Herzchen, Sternen, schönen Erinnerungen und ganz viel Glitzer-Stimmung.
+        Diese Seite ist dafür da, zu zeigen: <strong>Du bist etwas ganz Besonderes.</strong>
+      </p>
+
+      <div class="badge-row">
+        <div class="badge">💖 mutig</div>
+        <div class="badge">🌙 einzigartig</div>
+        <div class="badge">⭐ cool</div>
+        <div class="badge">🦋 voller Ideen</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Für Maira</h2>
+        <p>
+          Manche Menschen sind einfach besonders – und Maira gehört genau dazu.
+          Mit ihrem eigenen Stil, ihrer Ausstrahlung und ihrer Art bringt sie Licht in den Tag.
+        </p>
+      </article>
+
+      <article class="card">
+        <h2>Was diese Seite zeigen soll</h2>
+        <ul>
+          <li>dass du toll bist</li>
+          <li>dass du eine eigene kleine Website haben kannst</li>
+          <li>dass Sterne und Herzen perfekt zu dir passen</li>
+          <li>dass coole Dinge auch persönlich sein dürfen</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h2>Mairas Lieblingsplatz</h2>
+        <p>
+          Hier kann später alles rein, was Maira mag: Lieblingsbilder, kleine Sprüche,
+          Glitzerfarben, Hobbys oder einfach schöne Momente mit Familie und Freundinnen.
+        </p>
+      </article>
+    </section>
+
+    <section class="photo-section">
+      <h2><span class="sparkle">✦</span> Platz für Bilder <span class="sparkle">✦</span></h2>
+      <div class="photo-grid">
+        <div class="photo-box">Bild 1<br>Hier kann ein schönes Foto von Maira rein</div>
+        <div class="photo-box">Bild 2<br>Zum Beispiel ein Lieblingsmoment</div>
+        <div class="photo-box">Bild 3<br>Oder ein Bild mit Freundinnen</div>
+        <div class="photo-box">Bild 4<br>Oder etwas mit Glitzer, Style oder Spaß</div>
+      </div>
+    </section>
+
+    <section class="quote">
+      „Zwischen all den Sternen leuchtet jeder anders –
+      und genau das macht ihn wunderschön.“ 💫
+    </section>
+
+    <footer class="footer">
+      Gemacht mit ganz viel Liebe, Herzchen und Sternen für Maira 💖⭐
+    </footer>
+  </main>
+
+  <script>
+    const stars = document.getElementById('stars');
+    const hearts = document.getElementById('hearts');
+
+    function createFloatingSymbols(container, symbol, className, count, minSize, maxSize) {
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement('div');
+        el.className = className;
+        el.textContent = symbol;
+        const size = Math.random() * (maxSize - minSize) + minSize;
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.top = Math.random() * 100 + 'vh';
+        el.style.fontSize = size + 'px';
+        el.style.animationDuration = (Math.random() * 5 + 4) + 's';
+        el.style.animationDelay = (Math.random() * 3) + 's';
+        el.style.opacity = (Math.random() * 0.45 + 0.35).toFixed(2);
+        container.appendChild(el);
+      }
+    }
+
+    createFloatingSymbols(stars, '✦', 'star', 34, 10, 24);
+    createFloatingSymbols(hearts, '♥', 'heart', 18, 12, 22);
+  </script>
+</body>
+</html>
