@@ -3,177 +3,264 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mairas Sternenwelt</title>
+  <title>Maira – Sternenwelt</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet" />
+
   <style>
+    :root {
+      --bg-1: #090d1f;
+      --bg-2: #121938;
+      --bg-3: #1a1040;
+      --card: rgba(255, 255, 255, 0.08);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --pink: #ff8fd1;
+      --pink-2: #ffb5e6;
+      --violet: #c8b6ff;
+      --yellow: #ffe78a;
+      --white-soft: #f8f6ff;
+      --text-soft: #ece8ff;
+      --shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(255, 105, 180, 0.12), transparent 25%),
-        radial-gradient(circle at 80% 20%, rgba(173, 216, 230, 0.12), transparent 20%),
-        linear-gradient(180deg, #0d1020 0%, #131933 45%, #0b0f1f 100%);
-      color: #f8f5ff;
-      min-height: 100vh;
-      overflow-x: hidden;
+    html {
+      scroll-behavior: smooth;
     }
 
-    .stars, .hearts {
+    body {
+      font-family: "Quicksand", sans-serif;
+      color: var(--white-soft);
+      min-height: 100vh;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(255, 143, 209, 0.16), transparent 18%),
+        radial-gradient(circle at 85% 10%, rgba(200, 182, 255, 0.18), transparent 18%),
+        radial-gradient(circle at 50% 80%, rgba(255, 231, 138, 0.08), transparent 20%),
+        linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 45%, var(--bg-3) 100%);
+      cursor: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .sky,
+    .floating-hearts,
+    .sparkle-layer,
+    .cursor-trail {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 0;
-    }
-
-    .star, .heart {
-      position: absolute;
-      opacity: 0.8;
-      animation: floaty linear infinite;
+      overflow: hidden;
     }
 
     .star {
-      color: #fff4a8;
-      text-shadow: 0 0 10px rgba(255, 244, 168, 0.7);
+      position: absolute;
+      color: var(--yellow);
+      text-shadow: 0 0 10px rgba(255, 231, 138, 0.8);
+      animation: twinkle 3.5s infinite ease-in-out;
+      opacity: 0.75;
     }
 
     .heart {
-      color: #ff7ac8;
-      text-shadow: 0 0 10px rgba(255, 122, 200, 0.8);
+      position: absolute;
+      color: var(--pink);
+      text-shadow: 0 0 10px rgba(255, 143, 209, 0.85);
+      animation: floatUp linear infinite;
+      opacity: 0.5;
     }
 
-    @keyframes floaty {
-      from {
-        transform: translateY(0px);
-      }
-      50% {
-        transform: translateY(-18px);
-      }
-      to {
-        transform: translateY(0px);
-      }
+    .spark {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff 0%, #ffd4ef 45%, rgba(255,255,255,0) 75%);
+      animation: sparkleFade 800ms ease-out forwards;
+      box-shadow: 0 0 12px rgba(255, 180, 230, 0.8);
+    }
+
+    .cursor-dot {
+      position: fixed;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,170,220,0.95) 35%, rgba(255,122,200,0.25) 70%, rgba(255,122,200,0) 100%);
+      box-shadow:
+        0 0 12px rgba(255, 165, 225, 0.9),
+        0 0 24px rgba(255, 165, 225, 0.4);
+      z-index: 9999;
+      pointer-events: none;
     }
 
     .container {
       position: relative;
       z-index: 1;
-      width: min(1100px, 92%);
+      width: min(1120px, calc(100% - 28px));
       margin: 0 auto;
-      padding: 32px 0 60px;
+      padding: 20px 0 56px;
+    }
+
+    .top-space {
+      height: 8px;
     }
 
     .hero {
+      position: relative;
       text-align: center;
-      padding: 56px 24px 36px;
+      padding: 34px 22px 30px;
       border-radius: 28px;
       background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
-      margin-bottom: 28px;
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
     }
 
-    .hero h1 {
-      font-size: clamp(2.2rem, 6vw, 4.2rem);
-      line-height: 1.05;
-      margin-bottom: 14px;
-      color: #ffd4f0;
-      text-shadow: 0 0 18px rgba(255, 160, 220, 0.25);
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(135deg, rgba(255,143,209,0.2), rgba(200,182,255,0.16), rgba(255,231,138,0.08));
+      z-index: -1;
+      filter: blur(18px);
+      opacity: 0.7;
     }
 
-    .hero p {
-      font-size: clamp(1rem, 2.4vw, 1.25rem);
-      color: #ece6ff;
-      max-width: 760px;
-      margin: 0 auto 22px;
+    .logo {
+      font-family: "Pacifico", cursive;
+      font-size: clamp(2.2rem, 7vw, 4.7rem);
+      line-height: 1.1;
+      color: var(--pink-2);
+      text-shadow:
+        0 0 12px rgba(255, 143, 209, 0.7),
+        0 0 25px rgba(255, 143, 209, 0.35);
+      margin-bottom: 12px;
+      animation: logoGlow 4s ease-in-out infinite;
+    }
+
+    .subtitle {
+      font-size: clamp(1rem, 2.9vw, 1.3rem);
+      color: var(--text-soft);
       line-height: 1.6;
+      max-width: 760px;
+      margin: 0 auto 18px;
     }
 
     .badge-row {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 12px;
-      margin-top: 18px;
+      gap: 10px;
+      margin-top: 12px;
     }
 
     .badge {
-      padding: 10px 16px;
+      padding: 10px 15px;
       border-radius: 999px;
-      background: rgba(255, 122, 200, 0.15);
-      border: 1px solid rgba(255, 122, 200, 0.25);
-      color: #ffe5f5;
+      background: rgba(255, 143, 209, 0.14);
+      border: 1px solid rgba(255, 143, 209, 0.24);
+      color: #ffeaf7;
+      font-weight: 700;
       font-size: 0.95rem;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
     }
 
-    .grid {
+    .section {
+      margin-top: 22px;
+      padding: 22px;
+      border-radius: 24px;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .section-title {
+      font-size: clamp(1.25rem, 3.8vw, 1.9rem);
+      color: #ffe4f5;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .section-text {
+      color: var(--text-soft);
+      line-height: 1.7;
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 22px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
       margin-top: 22px;
     }
 
     .card {
+      padding: 20px;
+      border-radius: 22px;
       background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 24px;
-      padding: 22px;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
-      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.22);
     }
 
-    .card h2 {
-      font-size: 1.35rem;
+    .card h3 {
+      color: #ffd4ef;
       margin-bottom: 10px;
-      color: #ffd7f1;
+      font-size: 1.15rem;
     }
 
-    .card p, .card li {
-      color: #efeaff;
+    .card p,
+    .card li {
+      color: var(--text-soft);
       line-height: 1.65;
-      font-size: 1rem;
+      font-size: 0.98rem;
     }
 
     .card ul {
       padding-left: 18px;
-      margin-top: 8px;
-    }
-
-    .photo-section {
-      margin-top: 28px;
-    }
-
-    .photo-section h2 {
-      margin-bottom: 14px;
-      font-size: 1.6rem;
-      color: #ffe0f4;
-      text-align: center;
+      margin-top: 6px;
     }
 
     .photo-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 18px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
     }
 
     .photo-box {
-      aspect-ratio: 4 / 5;
-      border-radius: 24px;
+      position: relative;
+      border-radius: 22px;
       overflow: hidden;
-      border: 2px dashed rgba(255, 183, 220, 0.45);
-      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      aspect-ratio: 4 / 5;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border: 2px dashed rgba(255, 181, 230, 0.45);
+      box-shadow:
+        inset 0 0 20px rgba(255,255,255,0.04),
+        0 12px 24px rgba(0,0,0,0.2);
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
+      padding: 16px;
       color: #ffeaf7;
-      padding: 18px;
-      font-size: 1rem;
-      box-shadow: inset 0 0 20px rgba(255,255,255,0.04), 0 10px 22px rgba(0,0,0,0.22);
+      font-weight: 600;
+      min-height: 220px;
     }
 
     .photo-box img {
@@ -183,99 +270,353 @@
       display: block;
     }
 
-    .quote {
-      margin-top: 28px;
-      text-align: center;
-      padding: 28px 20px;
-      border-radius: 24px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      font-size: 1.2rem;
+    .photo-label {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(9, 13, 31, 0.72);
+      border: 1px solid rgba(255,255,255,0.15);
+      font-size: 0.85rem;
+      font-weight: 700;
       color: #fff0fa;
+      backdrop-filter: blur(6px);
+    }
+
+    .friends-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .friend {
+      padding: 16px;
+      border-radius: 18px;
+      text-align: center;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-soft);
+      font-weight: 700;
+    }
+
+    .music-wrap {
+      text-align: center;
+      margin-top: 18px;
+    }
+
+    .music-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 15px 22px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ff7ac8, #c18cff);
+      color: white;
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 12px 24px rgba(255, 122, 200, 0.28);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      min-width: 220px;
+    }
+
+    .music-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 16px 28px rgba(255, 122, 200, 0.38);
+    }
+
+    .music-btn:active {
+      transform: scale(0.98);
+    }
+
+    .music-note {
+      font-size: 1.2rem;
+    }
+
+    .quote {
+      margin-top: 22px;
+      padding: 24px 20px;
+      border-radius: 24px;
+      text-align: center;
+      font-size: clamp(1.05rem, 3vw, 1.3rem);
       line-height: 1.7;
+      color: #fff2fb;
       font-style: italic;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: var(--shadow);
     }
 
     .footer {
-      margin-top: 30px;
+      margin-top: 24px;
       text-align: center;
-      color: #d9d0f4;
+      color: #ddd4ff;
+      opacity: 0.95;
       font-size: 0.95rem;
-      opacity: 0.92;
+      padding: 8px 8px 0;
     }
 
-    .sparkle {
-      color: #ffe88a;
+    @keyframes twinkle {
+      0%, 100% {
+        opacity: 0.35;
+        transform: scale(0.9);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.3);
+      }
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.45;
+      }
+      80% {
+        opacity: 0.35;
+      }
+      100% {
+        transform: translateY(-120vh) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    @keyframes sparkleFade {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(2.8);
+      }
+    }
+
+    @keyframes logoGlow {
+      0%, 100% {
+        transform: translateY(0);
+        text-shadow:
+          0 0 12px rgba(255, 143, 209, 0.7),
+          0 0 25px rgba(255, 143, 209, 0.35);
+      }
+      50% {
+        transform: translateY(-2px);
+        text-shadow:
+          0 0 18px rgba(255, 143, 209, 0.95),
+          0 0 34px rgba(255, 143, 209, 0.48);
+      }
+    }
+
+    @media (max-width: 980px) {
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .photo-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .friends-list {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media (max-width: 640px) {
-      .hero {
-        padding: 38px 18px 26px;
+      body {
+        cursor: auto;
       }
 
-      .card {
-        padding: 18px;
+      .cursor-trail {
+        display: none;
+      }
+
+      .container {
+        width: min(100%, calc(100% - 18px));
+        padding-top: 10px;
+        padding-bottom: 34px;
+      }
+
+      .hero {
+        padding: 24px 14px 22px;
+        border-radius: 22px;
+      }
+
+      .logo {
+        font-size: clamp(2rem, 10vw, 3rem);
+      }
+
+      .subtitle {
+        font-size: 0.98rem;
+      }
+
+      .badge-row {
+        gap: 8px;
+      }
+
+      .badge {
+        font-size: 0.85rem;
+        padding: 9px 12px;
+      }
+
+      .section {
+        padding: 16px;
+        border-radius: 20px;
+      }
+
+      .photo-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .photo-box {
+        min-height: 260px;
+      }
+
+      .music-btn {
+        width: 100%;
+        max-width: 100%;
+        font-size: 1.08rem;
+        padding: 16px 18px;
+      }
+
+      .quote {
+        padding: 18px 14px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="stars" id="stars"></div>
-  <div class="hearts" id="hearts"></div>
+  <div class="sky" id="sky"></div>
+  <div class="floating-hearts" id="floatingHearts"></div>
+  <div class="sparkle-layer" id="sparkleLayer"></div>
+  <div class="cursor-trail" id="cursorTrail"></div>
 
   <main class="container">
+    <div class="top-space"></div>
+
     <section class="hero">
-      <h1>✨ Mairas Sternenwelt ✨</h1>
-      <p>
-        Willkommen auf einer kleinen besonderen Seite nur für <strong>Maira</strong> –
-        mit Herzchen, Sternen, schönen Erinnerungen und ganz viel Glitzer-Stimmung.
-        Diese Seite ist dafür da, zu zeigen: <strong>Du bist etwas ganz Besonderes.</strong>
+      <div class="logo">✨ Maira ✨</div>
+      <p class="subtitle">
+        Willkommen in Mairas kleiner Sternenwelt – mit Glitzer, Herzen, Lieblingsbildern
+        und einer extra Portion Magie. Diese Seite soll einfach zeigen:
+        <strong>Du bist besonders. Du bist cool. Du bist Maira.</strong>
       </p>
 
       <div class="badge-row">
-        <div class="badge">💖 mutig</div>
-        <div class="badge">🌙 einzigartig</div>
-        <div class="badge">⭐ cool</div>
-        <div class="badge">🦋 voller Ideen</div>
+        <span class="badge">💖 besonders</span>
+        <span class="badge">⭐ cool</span>
+        <span class="badge">🌙 einzigartig</span>
+        <span class="badge">✨ voller Glitzer</span>
       </div>
     </section>
 
-    <section class="grid">
-      <article class="card">
-        <h2>Für Maira</h2>
-        <p>
-          Manche Menschen sind einfach besonders – und Maira gehört genau dazu.
-          Mit ihrem eigenen Stil, ihrer Ausstrahlung und ihrer Art bringt sie Licht in den Tag.
-        </p>
-      </article>
+    <section class="section">
+      <h2 class="section-title">Meine kleine Welt</h2>
+      <p class="section-text">
+        Hier ist Platz für schöne Bilder, kleine Erinnerungen, Freundinnen, Musik und alles,
+        was Maira mag. Die Seite ist extra dunkel, glitzernd und modern gemacht, damit sie
+        auf dem Handy genauso schön aussieht wie auf dem Computer.
+      </p>
 
-      <article class="card">
-        <h2>Was diese Seite zeigen soll</h2>
-        <ul>
-          <li>dass du toll bist</li>
-          <li>dass du eine eigene kleine Website haben kannst</li>
-          <li>dass Sterne und Herzen perfekt zu dir passen</li>
-          <li>dass coole Dinge auch persönlich sein dürfen</li>
-        </ul>
-      </article>
+      <div class="cards">
+        <article class="card">
+          <h3>💗 Das macht Maira besonders</h3>
+          <p>
+            Manche Menschen leuchten einfach auf ihre eigene Weise. Genau das ist das Schöne:
+            nicht so sein wie alle anderen, sondern ganz man selbst.
+          </p>
+        </article>
 
-      <article class="card">
-        <h2>Mairas Lieblingsplatz</h2>
-        <p>
-          Hier kann später alles rein, was Maira mag: Lieblingsbilder, kleine Sprüche,
-          Glitzerfarben, Hobbys oder einfach schöne Momente mit Familie und Freundinnen.
-        </p>
-      </article>
+        <article class="card">
+          <h3>🌟 Was hier später rein kann</h3>
+          <ul>
+            <li>Lieblingsbilder</li>
+            <li>coole Sprüche</li>
+            <li>Freundinnen</li>
+            <li>Lieblingsfarben</li>
+            <li>Hobbys und Lieblingssachen</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>🪄 Warum diese Seite cool ist</h3>
+          <p>
+            Weil sie nicht einfach nur eine Webseite ist – sondern etwas Eigenes, Persönliches
+            und Schönes, das man sogar Freundinnen zeigen kann.
+          </p>
+        </article>
+      </div>
     </section>
 
-    <section class="photo-section">
-      <h2><span class="sparkle">✦</span> Platz für Bilder <span class="sparkle">✦</span></h2>
+    <section class="section">
+      <h2 class="section-title">📸 Meine Bilder</h2>
       <div class="photo-grid">
-        <div class="photo-box">Bild 1<br>Hier kann ein schönes Foto von Maira rein</div>
-        <div class="photo-box">Bild 2<br>Zum Beispiel ein Lieblingsmoment</div>
-        <div class="photo-box">Bild 3<br>Oder ein Bild mit Freundinnen</div>
-        <div class="photo-box">Bild 4<br>Oder etwas mit Glitzer, Style oder Spaß</div>
+        <div class="photo-box">
+          <img src="IMG_3372.JPG" alt="Maira" />
+          <div class="photo-label">Maira 💖</div>
+        </div>
+
+        <div class="photo-box">
+          <div>
+            Bildplatz 2<br />
+            Hier kann noch ein Lieblingsbild rein ✨
+          </div>
+        </div>
+
+        <div class="photo-box">
+          <div>
+            Bildplatz 3<br />
+            Vielleicht mit Freundinnen 👭
+          </div>
+        </div>
+
+        <div class="photo-box">
+          <div>
+            Bildplatz 4<br />
+            Oder ein besonders schöner Moment ⭐
+          </div>
+        </div>
       </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">👭 Meine Freundinnen</h2>
+      <p class="section-text">
+        Hier können später Namen, Bilder oder kleine Infos über Mairas Freundinnen stehen.
+      </p>
+
+      <ul class="friends-list">
+        <li class="friend">✨ Freundin 1</li>
+        <li class="friend">💖 Freundin 2</li>
+        <li class="friend">⭐ Freundin 3</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">🎵 Musik</h2>
+      <p class="section-text">
+        Wenn du eigene Musik nutzen möchtest, lege einfach eine Datei mit dem Namen
+        <strong>musik.mp3</strong> in denselben Ordner wie diese HTML-Datei.
+      </p>
+
+      <div class="music-wrap">
+        <button class="music-btn" id="musicBtn" type="button">
+          <span class="music-note">🎶</span>
+          <span id="musicBtnText">Musik starten</span>
+        </button>
+      </div>
+
+      <audio id="music" preload="auto">
+        <source src="musik.mp3" type="audio/mpeg" />
+      </audio>
     </section>
 
     <section class="quote">
@@ -284,32 +625,115 @@
     </section>
 
     <footer class="footer">
-      Gemacht mit ganz viel Liebe, Herzchen und Sternen für Maira 💖⭐
+      Gemacht mit Herzen, Sternen und ganz viel Glitzer für Maira 💖⭐✨
     </footer>
   </main>
 
   <script>
-    const stars = document.getElementById('stars');
-    const hearts = document.getElementById('hearts');
+    const sky = document.getElementById("sky");
+    const floatingHearts = document.getElementById("floatingHearts");
+    const sparkleLayer = document.getElementById("sparkleLayer");
+    const cursorTrail = document.getElementById("cursorTrail");
 
-    function createFloatingSymbols(container, symbol, className, count, minSize, maxSize) {
+    function createStars(count = 42) {
       for (let i = 0; i < count; i++) {
-        const el = document.createElement('div');
-        el.className = className;
-        el.textContent = symbol;
-        const size = Math.random() * (maxSize - minSize) + minSize;
-        el.style.left = Math.random() * 100 + 'vw';
-        el.style.top = Math.random() * 100 + 'vh';
-        el.style.fontSize = size + 'px';
-        el.style.animationDuration = (Math.random() * 5 + 4) + 's';
-        el.style.animationDelay = (Math.random() * 3) + 's';
-        el.style.opacity = (Math.random() * 0.45 + 0.35).toFixed(2);
-        container.appendChild(el);
+        const star = document.createElement("div");
+        star.className = "star";
+        star.textContent = "✦";
+        star.style.left = Math.random() * 100 + "vw";
+        star.style.top = Math.random() * 100 + "vh";
+        star.style.fontSize = (Math.random() * 16 + 10) + "px";
+        star.style.animationDelay = (Math.random() * 3) + "s";
+        star.style.animationDuration = (Math.random() * 3 + 2.5) + "s";
+        sky.appendChild(star);
       }
     }
 
-    createFloatingSymbols(stars, '✦', 'star', 34, 10, 24);
-    createFloatingSymbols(hearts, '♥', 'heart', 18, 12, 22);
+    function createHearts(count = 16) {
+      for (let i = 0; i < count; i++) {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.textContent = "♥";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.bottom = (-Math.random() * 100) + "px";
+        heart.style.fontSize = (Math.random() * 18 + 12) + "px";
+        heart.style.animationDuration = (Math.random() * 10 + 12) + "s";
+        heart.style.animationDelay = (Math.random() * 8) + "s";
+        floatingHearts.appendChild(heart);
+      }
+    }
+
+    createStars();
+    createHearts();
+
+    function makeSpark(x, y) {
+      const spark = document.createElement("div");
+      spark.className = "spark";
+      spark.style.left = x + "px";
+      spark.style.top = y + "px";
+      sparkleLayer.appendChild(spark);
+
+      setTimeout(() => {
+        spark.remove();
+      }, 800);
+    }
+
+    const isTouchDevice =
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
+      navigator.msMaxTouchPoints > 0;
+
+    if (!isTouchDevice) {
+      const cursor = document.createElement("div");
+      cursor.className = "cursor-dot";
+      cursorTrail.appendChild(cursor);
+
+      let sparkleCounter = 0;
+
+      window.addEventListener("mousemove", (e) => {
+        cursor.style.left = e.clientX + "px";
+        cursor.style.top = e.clientY + "px";
+
+        sparkleCounter++;
+        if (sparkleCounter % 2 === 0) {
+          makeSpark(e.clientX + (Math.random() * 10 - 5), e.clientY + (Math.random() * 10 - 5));
+        }
+      });
+    } else {
+      window.addEventListener("touchstart", (e) => {
+        const touch = e.touches[0];
+        for (let i = 0; i < 6; i++) {
+          setTimeout(() => {
+            makeSpark(
+              touch.clientX + (Math.random() * 40 - 20),
+              touch.clientY + (Math.random() * 40 - 20)
+            );
+          }, i * 40);
+        }
+      });
+    }
+
+    const music = document.getElementById("music");
+    const musicBtn = document.getElementById("musicBtn");
+    const musicBtnText = document.getElementById("musicBtnText");
+
+    musicBtn.addEventListener("click", async () => {
+      try {
+        if (music.paused) {
+          await music.play();
+          musicBtnText.textContent = "Musik pausieren";
+        } else {
+          music.pause();
+          musicBtnText.textContent = "Musik starten";
+        }
+      } catch (error) {
+        alert("Lege bitte eine Datei mit dem Namen 'musik.mp3' in denselben Ordner wie die HTML-Datei.");
+      }
+    });
+
+    music.addEventListener("ended", () => {
+      musicBtnText.textContent = "Musik starten";
+    });
   </script>
 </body>
 </html>
