@@ -264,10 +264,16 @@
     }
 
     .photo-box img {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
+    }
+
+    .photo-box img.hidden {
+      display: none;
     }
 
     .photo-label {
@@ -282,6 +288,11 @@
       font-weight: 700;
       color: #fff0fa;
       backdrop-filter: blur(6px);
+      z-index: 1;
+    }
+
+    .photo-fallback {
+      display: none;
     }
 
     .friends-list {
@@ -559,31 +570,47 @@
     <section class="section">
       <h2 class="section-title">📸 Meine Bilder</h2>
       <div class="photo-grid">
+
         <div class="photo-box">
-          <img src="IMG_3372.JPG" alt="Maira" />
+          <img
+            src="IMG_3372.JPG"
+            alt="Maira"
+            onerror="this.classList.add('hidden'); this.nextElementSibling.style.display='block';"
+          />
+          <span class="photo-fallback">💖<br /><small style="opacity:0.6;font-size:0.8rem;">Bild nicht gefunden</small></span>
           <div class="photo-label">Maira 💖</div>
         </div>
 
         <div class="photo-box">
-          <div>
-            Bildplatz 2<br />
-            Hier kann noch ein Lieblingsbild rein ✨
-          </div>
+          <img
+            src="IMG_3323.JPG"
+            alt="Foto 2"
+            onerror="this.classList.add('hidden'); this.nextElementSibling.style.display='block';"
+          />
+          <span class="photo-fallback">✨<br /><small style="opacity:0.6;font-size:0.8rem;">Bild nicht gefunden</small></span>
+          <div class="photo-label">✨</div>
         </div>
 
         <div class="photo-box">
-          <div>
-            Bildplatz 3<br />
-            Vielleicht mit Freundinnen 👭
-          </div>
+          <img
+            src="IMG_3471.JPG"
+            alt="Foto 3"
+            onerror="this.classList.add('hidden'); this.nextElementSibling.style.display='block';"
+          />
+          <span class="photo-fallback">👭<br /><small style="opacity:0.6;font-size:0.8rem;">Bild nicht gefunden</small></span>
+          <div class="photo-label">👭</div>
         </div>
 
         <div class="photo-box">
-          <div>
-            Bildplatz 4<br />
-            Oder ein besonders schöner Moment ⭐
-          </div>
+          <img
+            src="2022-08-22-11-22-0003.png"
+            alt="Foto 4"
+            onerror="this.classList.add('hidden'); this.nextElementSibling.style.display='block';"
+          />
+          <span class="photo-fallback">⭐<br /><small style="opacity:0.6;font-size:0.8rem;">Bild nicht gefunden</small></span>
+          <div class="photo-label">⭐</div>
         </div>
+
       </div>
     </section>
 
@@ -594,9 +621,9 @@
       </p>
 
       <ul class="friends-list">
-        <li class="friend">✨ Freundin 1</li>
-        <li class="friend">💖 Freundin 2</li>
-        <li class="friend">⭐ Freundin 3</li>
+        <li class="friend">✨ Aliya</li>
+        <li class="friend">💖 Fenja</li>
+        <li class="friend">⭐ Jan</li>
       </ul>
     </section>
 
@@ -614,14 +641,14 @@
         </button>
       </div>
 
-      <audio id="music" preload="auto">
-        <source src="musik.mp3" type="audio/mpeg" />
+      <audio id="music" preload="none">
+        <source src="__musik.mp3__" type="audio/mpeg" />
       </audio>
     </section>
 
     <section class="quote">
       „Zwischen all den Sternen leuchtet jeder anders –
-      und genau das macht ihn wunderschön.“ 💫
+      und genau das macht ihn wunderschön." 💫
     </section>
 
     <footer class="footer">
@@ -649,17 +676,29 @@
       }
     }
 
+    function spawnHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = "♥";
+      const duration = Math.random() * 10 + 12;
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.bottom = "-30px";
+      heart.style.fontSize = (Math.random() * 18 + 12) + "px";
+      heart.style.animationDuration = duration + "s";
+      heart.style.animationDelay = "0s";
+      floatingHearts.appendChild(heart);
+
+      // Herz nach Ende der Animation entfernen und neues spawnen
+      setTimeout(() => {
+        heart.remove();
+        spawnHeart();
+      }, duration * 1000);
+    }
+
     function createHearts(count = 16) {
       for (let i = 0; i < count; i++) {
-        const heart = document.createElement("div");
-        heart.className = "heart";
-        heart.textContent = "♥";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.bottom = (-Math.random() * 100) + "px";
-        heart.style.fontSize = (Math.random() * 18 + 12) + "px";
-        heart.style.animationDuration = (Math.random() * 10 + 12) + "s";
-        heart.style.animationDelay = (Math.random() * 8) + "s";
-        floatingHearts.appendChild(heart);
+        // Versetzter Start damit nicht alle gleichzeitig starten
+        setTimeout(() => spawnHeart(), Math.random() * 12000);
       }
     }
 
@@ -672,10 +711,7 @@
       spark.style.left = x + "px";
       spark.style.top = y + "px";
       sparkleLayer.appendChild(spark);
-
-      setTimeout(() => {
-        spark.remove();
-      }, 800);
+      setTimeout(() => spark.remove(), 800);
     }
 
     const isTouchDevice =
